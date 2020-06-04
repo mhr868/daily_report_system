@@ -1,4 +1,4 @@
-package employees;
+package controllers.employees;
 
 import java.io.IOException;
 

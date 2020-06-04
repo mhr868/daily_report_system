@@ -19,7 +19,7 @@
                                  (削除済み)
                              </c:when>
                              <c:otherwise>
-                                 <a href="<c:url value='/employees/show?id=${employee.id}'/>">詳細を表示</a>
+                                  <a href="${pageContext.request.contextPath}/employees/show?id=${employee.id}">詳細を表示</a>
                              </c:otherwise>
                         </c:choose>
                     </td>
