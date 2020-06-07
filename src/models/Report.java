@@ -73,8 +73,8 @@ public class Report {
         return report_date;
     }
 
-    public void setReport_date(Date report_date) {
-        this.report_date = report_date;
+    public void setReport_date(Date date) {
+        this.report_date = date;
     }
 
     public String getTitle() {
