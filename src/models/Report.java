@@ -61,6 +61,9 @@ public class Report {
     @Column(name = "updated_at", nullable = false)
     private Timestamp updated_at;
 
+    @Column(name = "iine_count", nullable = false)
+    private Integer iine_count;
+
     public Integer getId() {
         return id;
     }
@@ -116,4 +119,13 @@ public class Report {
     public void setUpdated_at(Timestamp updated_at) {
         this.updated_at = updated_at;
     }
+
+	public Integer getIine_count() {
+		return iine_count;
+	}
+
+	public void setIine_count(Integer iine_count) {
+		this.iine_count = iine_count;
+	}
+
 }

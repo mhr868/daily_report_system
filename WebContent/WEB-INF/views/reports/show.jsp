@@ -28,6 +28,10 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>いいね</th>
+                            <td>4</td>
+                        </tr>
+                        <tr>
                             <th>登録日時</th>
                             <td><fmt:formatDate value="${report.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         </tr>
@@ -37,6 +41,11 @@
                         </tr>
                     </tbody>
                 </table>
+
+				<form name="form_name" method="POST" action="<c:url value='/iine/create'/>">
+					<p><a href="javascript:form_name.submit()">この日報をいいねする</a></p>
+				</form>
+
 
                 <c:if test="${sessionScope.login_employee.id ==  report.employee.id}">
                     <p><a href="<c:url value='/reports/edit?id=${report.id}'/>">この日報を編集する</a></p>
