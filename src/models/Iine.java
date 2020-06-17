@@ -9,9 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "iine")
+@NamedQueries({
+	@NamedQuery(
+			name = "getIine",
+			query = "Select i From Iine As i Where i.employee = :employee And i.report = :report"
+			)
+})
 @Entity
 public class Iine {
 

@@ -29,7 +29,7 @@
                         </tr>
                         <tr>
                             <th>いいね</th>
-                            <td>4</td>
+                            <td><c:out value="${report.iine_count}"/></td>
                         </tr>
                         <tr>
                             <th>登録日時</th>
@@ -41,11 +41,29 @@
                         </tr>
                     </tbody>
                 </table>
+                <c:choose>
+					<c:when test="${iine_flag}">
+						<form name="form_name1" method="POST"
+							action="<c:url value='/iine/create'/>">
+							<input type="hidden" name="_token" value="${_token}"> <input
+								type="hidden" name="report_id" value="${report.id}">
+							<p>
+								<a href="javascript:form_name1.submit()">この日報をいいねする</a>
+							</p>
+						</form>
+					</c:when>
+					<c:otherwise>
+					    <form name="form_name2" method="POST"
+							action="<c:url value='/iine/destroy'/>">
+							<input type="hidden" name="_token" value="${_token}"> <input
+								type="hidden" name="report_id" value="${report.id}">
+							<p>
+								<a href="javascript:form_name2.submit()">この日報のいいねを取り消す</a>
+							</p>
+						</form>
 
-				<form name="form_name" method="POST" action="<c:url value='/iine/create'/>">
-					<p><a href="javascript:form_name.submit()">この日報をいいねする</a></p>
-				</form>
-
+                    </c:otherwise>
+                </c:choose>
 
                 <c:if test="${sessionScope.login_employee.id ==  report.employee.id}">
                     <p><a href="<c:url value='/reports/edit?id=${report.id}'/>">この日報を編集する</a></p>
