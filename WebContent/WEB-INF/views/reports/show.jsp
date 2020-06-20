@@ -29,7 +29,7 @@
                         </tr>
                         <tr>
                             <th>いいね</th>
-                            <td><c:out value="${report.iine_count}"/></td>
+                            <td><a href="<c:url value='/iine/employees/index?id=${report.id}' />"><c:out value="${report.iine_count}"/></a></td>
                         </tr>
                         <tr>
                             <th>登録日時</th>
