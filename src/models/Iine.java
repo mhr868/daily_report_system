@@ -18,6 +18,10 @@ import javax.persistence.Table;
 	@NamedQuery(
 			name = "getIine",
 			query = "Select i From Iine As i Where i.employee = :employee And i.report = :report"
+			),
+	@NamedQuery(
+			name = "getReportIine",
+			query = "Select i From Iine As i Where i.report = :report"
 			)
 })
 @Entity
