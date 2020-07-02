@@ -29,11 +29,11 @@
                         </tr>
                         <tr>
                             <th>出勤時刻</th>
-                            <td></td>
+                            <td><fmt:formatDate value="${worktime.worktime_begin}" pattern="HH:mm" /></td>
                         </tr>
                         <tr>
                             <th>退勤時刻</th>
-                            <td></td>
+                            <td><fmt:formatDate value="${worktime.worktime_finish}" pattern="HH:mm" /></td>
                         </tr>
                         <tr>
                             <th>いいね</th>

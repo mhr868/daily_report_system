@@ -3,6 +3,7 @@ package controllers.reports;
 import java.io.IOException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
 import models.Report;
+import models.Worktime;
 import models.iine_check.IineChecker;
 import utils.DBUtil;
 
@@ -39,12 +41,25 @@ public class ReportsShowServlet extends HttpServlet {
 
 		Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
 
+		Worktime worktime = new Worktime();
+		//日報の出勤情報
+		try {
+			worktime = em.createNamedQuery("getMyWorktimeToday", Worktime.class)
+				.setParameter("employee", r.getEmployee())
+				.setParameter("date", r.getReport_date())
+				.getSingleResult();
+
+		} catch(NoResultException e){
+
+		}
+
 		em.close();
 
 		Employee login_employee = (Employee)(request.getSession().getAttribute("login_employee"));
         Boolean iine_flag = IineChecker.iine_checker(login_employee, r);
 
 		request.setAttribute("report", r);
+		request.setAttribute("worktime", worktime);
 		request.setAttribute("iine_flag", iine_flag);
 		request.setAttribute("_token", request.getSession().getId());
 
