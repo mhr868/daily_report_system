@@ -27,5 +27,6 @@
 <br/>
 <br/>
 
+
 <input type="hidden" name="_token" value="${_token}">
 <button type="submit">投稿</button>

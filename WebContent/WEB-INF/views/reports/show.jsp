@@ -28,6 +28,14 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>出勤時刻</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>退勤時刻</th>
+                            <td></td>
+                        </tr>
+                        <tr>
                             <th>いいね</th>
                             <td><a href="<c:url value='/iine/employees/index?id=${report.id}' />"><c:out value="${report.iine_count}"/></a></td>
                         </tr>

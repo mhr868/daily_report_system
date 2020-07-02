@@ -63,6 +63,10 @@ public class ReportsCreateServlet extends HttpServlet {
 
 			r.setIine_count(0);
 
+
+
+
+
             List<String> errors = ReportValidator.validate(r);
             if(errors.size() > 0) {
             	em.close();

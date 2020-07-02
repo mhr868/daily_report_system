@@ -16,6 +16,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "reports")
+
 @NamedQueries({
     @NamedQuery(
             name = "getAllReports",
@@ -127,5 +128,7 @@ public class Report {
 	public void setIine_count(Integer iine_count) {
 		this.iine_count = iine_count;
 	}
+
+
 
 }
