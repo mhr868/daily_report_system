@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:import url="/WEB-INF/views/layout/app.jsp">
     <c:param name="content">
         <c:if test="${flush != null}">
@@ -26,5 +27,38 @@
                 </form>
             </c:otherwise>
         </c:choose>
+
+        <table>
+            <tbody>
+                <tr>
+                    <th>日付</th>
+                    <th>出勤時間</th>
+                    <th>退勤時間</th>
+                    <th>勤務状態</th>
+                </tr>
+                <c:forEach var="worktime" items="${worktimes}" varStatus="status">
+                    <tr class="row${status.count % 2}">
+                        <td><fmt:formatDate value="${worktime.date}" pattern="MM/dd"/></td>
+                        <td><fmt:formatDate value="${worktime.worktime_begin}" pattern="hh:mm"/></td>
+                        <td><fmt:formatDate value="${worktime.worktime_finish}" pattern="hh:mm"/></td>
+                        <c:choose>
+                            <c:when test="${worktime.worktime_finish != null}">
+                                <td>退勤済</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>出勤中</td>
+                            </c:otherwise>
+                        </c:choose>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+
+        <div id="pagination">
+            <c:forEach var="month" items="month_list">
+                <c:out value="${month}"/>
+            </c:forEach>
+        </div>
+
     </c:param>
 </c:import>

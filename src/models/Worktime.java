@@ -20,6 +20,18 @@ import javax.persistence.Table;
 	@NamedQuery(
 			name = "getMyWorktimeToday",
 			query = "SELECT w FROM Worktime AS w WHERE w.employee = :employee AND w.date = :date"
+			),
+	@NamedQuery(
+			name = "getMyWorktime",
+			query = "SELECT w FROM Worktime AS w WHERE w.employee = :employee AND w.date BETWEEN :from_date and :to_date"
+			),
+	@NamedQuery(
+			name = "getMyOldestWorktime",
+			query = "SELECT w FROM Worktime AS w WHERE w.employee = :employee ORDER BY w.date"
+			),
+	@NamedQuery(
+			name = "getMyNewestWorktime",
+			query = "SELECT w FROM Worktime AS w WHERE w.employee = :employee ORDER BY w.date DESC"
 			)
 })
 

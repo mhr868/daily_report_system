@@ -40,7 +40,7 @@
                         <c:out value="${i}"></c:out>&nbsp;
                     </c:when>
                     <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/index?page=${i}"><c:out value="${i}"></c:out></a>
+                        <a href="${pageContext.request.contextPath}/employees/index?page=${i}"><c:out value="${i}"></c:out></a>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>

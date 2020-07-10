@@ -40,15 +40,14 @@ public class ReportsShowServlet extends HttpServlet {
 		EntityManager em = DBUtil.createEntityManager();
 
 		Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
-
-		Worktime worktime = new Worktime();
+		
 		//日報の出勤情報
+		Worktime worktime = new Worktime();		
 		try {
 			worktime = em.createNamedQuery("getMyWorktimeToday", Worktime.class)
 				.setParameter("employee", r.getEmployee())
 				.setParameter("date", r.getReport_date())
 				.getSingleResult();
-
 		} catch(NoResultException e){
 
 		}

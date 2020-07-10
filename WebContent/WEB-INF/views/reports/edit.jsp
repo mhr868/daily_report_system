@@ -10,6 +10,7 @@
                     <c:import url="_form.jsp">
                     </c:import>
                 </form>
+
             </c:when>
             <c:otherwise>
                 <h2>お探しのデータは見つかりませんでした。</h2>
