@@ -2,8 +2,8 @@ package controllers.worktime;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.Calendar;
-import java.util.Collections;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -61,28 +61,33 @@ public class WorktimeIndexServlet extends HttpServlet {
 
 	    }
 
-	    Calendar today = Calendar.getInstance();
-	    int current_year = today.get(Calendar.YEAR);
-	    int current_month = today.get(Calendar.MONTH);
+	    //月初
+	    LocalDate start = LocalDate.now().withDayOfMonth(1);
+	    int current_month = start.getMonthValue();
+	    LocalDate end = start.plusMonths(1).minusDays(1);
+	    List<Worktime> worktimes = new ArrayList<Worktime>();
 
-	    String tukihazime = current_year + "-" + (current_month + 1) +"-01";
-	    Date from_date = Date.valueOf(tukihazime);
-	    //to_dateの計算
-	    Calendar cal = Calendar.getInstance();
-	    cal.setTime(from_date);
-	    cal.add(Calendar.MONTH, 1);
-	    cal.add(Calendar.DAY_OF_MONTH, -1);
-	    
+	    while (true) {
+	    	Date d = Date.valueOf(start);
+	    	try {
+	    		Worktime w = em.createNamedQuery("getMyWorktimeToday", Worktime.class)
+		    			.setParameter("employee", login_employee)
+		    			.setParameter("date", d)
+		    			.getSingleResult();
+	    		if (w != null) {
+		    		worktimes.add(w);
+	    		}
+	    	} catch (NoResultException e) {
+	    		Worktime w = new Worktime();
+	    		w.setDate(d);
+	    		worktimes.add(w);
+	    	}
 
-	    String tukiowari = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE);
-	    Date to_date = Date.valueOf(tukiowari);
-
-	    List<Worktime> worktimes = em.createNamedQuery("getMyWorktime", Worktime.class)
-	    		.setParameter("employee", login_employee)
-	    		.setParameter("from_date", from_date)
-	    		.setParameter("to_date", to_date)
-	    		.getResultList();
-	    Collections.reverse(worktimes);
+	    	if (start.getDayOfMonth() == end.getDayOfMonth()) {
+	    		break;
+	    	}
+	    	start = start.plusDays(1);
+	    }
 
 	    em.close();
 
@@ -93,6 +98,7 @@ public class WorktimeIndexServlet extends HttpServlet {
 			request.setAttribute("flush", request.getSession().getAttribute("flush"));
 			request.getSession().removeAttribute("flush");
 		}
+		request.setAttribute("month", current_month);
 		request.setAttribute("worktimes", worktimes);
 
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/worktime/index.jsp");

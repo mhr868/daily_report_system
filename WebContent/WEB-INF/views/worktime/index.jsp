@@ -27,7 +27,7 @@
                 </form>
             </c:otherwise>
         </c:choose>
-
+        <p><c:out value="${month}"/>月の出勤情報</p>
         <table>
             <tbody>
                 <tr>
@@ -45,20 +45,17 @@
                             <c:when test="${worktime.worktime_finish != null}">
                                 <td>退勤済</td>
                             </c:when>
-                            <c:otherwise>
+                            <c:when test="${worktime.worktime_begin != null}">
                                 <td>出勤中</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td></td>
                             </c:otherwise>
                         </c:choose>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-
-        <div id="pagination">
-            <c:forEach var="month" items="month_list">
-                <c:out value="${month}"/>
-            </c:forEach>
-        </div>
 
     </c:param>
 </c:import>
