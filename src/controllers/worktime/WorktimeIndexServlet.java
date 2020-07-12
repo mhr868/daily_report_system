@@ -41,12 +41,38 @@ public class WorktimeIndexServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		EntityManager em = DBUtil.createEntityManager();
 
-		// work_flagがtrueなら仕事中、falseなら休み中
+		//sessionscopeに置く日付の情報
+	    LocalDate session_date = LocalDate.now().withDayOfMonth(1);
+	    if (request.getSession().getAttribute("session_date") != null) {
+	    	session_date = (LocalDate)request.getSession().getAttribute("session_date");
+	    }
+
+	    String cursor = request.getParameter("cursor");
+	    if (cursor != null) {
+	    	switch (cursor) {
+	    	case "back": session_date = session_date.minusMonths(1);
+	    	break;
+	    	case "forward": session_date = session_date.plusMonths(1);
+	    	break;
+	    	}
+	    }
+	    //viewに渡すDate型の情報
+	    Date for_page = Date.valueOf(session_date);
+
+	    request.getSession().setAttribute("session_date", session_date);
+		request.setAttribute("date_for_page", for_page);
+
+		//月のページリンクの表示切替
+		boolean is_max_month = false;
+		if ((LocalDate.now().isAfter(session_date) || LocalDate.now().isEqual(session_date)) && LocalDate.now().isBefore(session_date.plusMonths(1))) {
+			is_max_month = true;
+		}
+
+		// 出勤/退勤ボタンの表示切替 work_flagがtrueなら仕事中、falseなら休み中
 		boolean work_flag = false;
 		Employee login_employee = (Employee)(request.getSession().getAttribute("login_employee"));
 	    Date worktime_date = new Date(System.currentTimeMillis());
 
-	    //仕事中かどうか　work_flag
 	    try{
 	    	Worktime worktime_today = em.createNamedQuery("getMyWorktimeToday", Worktime.class)
 					.setParameter("employee", login_employee)
@@ -61,14 +87,12 @@ public class WorktimeIndexServlet extends HttpServlet {
 
 	    }
 
-	    //月初
-	    LocalDate start = LocalDate.now().withDayOfMonth(1);
-	    int current_month = start.getMonthValue();
-	    LocalDate end = start.plusMonths(1).minusDays(1);
+	    //月の末日の計算
+	    LocalDate end = session_date.plusMonths(1).minusDays(1);
 	    List<Worktime> worktimes = new ArrayList<Worktime>();
 
 	    while (true) {
-	    	Date d = Date.valueOf(start);
+	    	Date d = Date.valueOf(session_date);
 	    	try {
 	    		Worktime w = em.createNamedQuery("getMyWorktimeToday", Worktime.class)
 		    			.setParameter("employee", login_employee)
@@ -83,22 +107,25 @@ public class WorktimeIndexServlet extends HttpServlet {
 	    		worktimes.add(w);
 	    	}
 
-	    	if (start.getDayOfMonth() == end.getDayOfMonth()) {
+	    	if (session_date.getDayOfMonth() == end.getDayOfMonth()) {
 	    		break;
 	    	}
-	    	start = start.plusDays(1);
+	    	session_date = session_date.plusDays(1);
 	    }
 
 	    em.close();
 
+
+
 	    request.setAttribute("_token", request.getSession().getId());
+	    request.setAttribute("is_max_month", is_max_month);
 		request.setAttribute("work_flag", work_flag);
 
 		if (request.getSession().getAttribute("flush") != null) {
 			request.setAttribute("flush", request.getSession().getAttribute("flush"));
 			request.getSession().removeAttribute("flush");
 		}
-		request.setAttribute("month", current_month);
+
 		request.setAttribute("worktimes", worktimes);
 
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/worktime/index.jsp");

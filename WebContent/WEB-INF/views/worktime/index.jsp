@@ -27,7 +27,7 @@
                 </form>
             </c:otherwise>
         </c:choose>
-        <p><c:out value="${month}"/>月の出勤情報</p>
+        <p><fmt:formatDate value="${date_for_page}" pattern="yyyy年MM月"/> の出勤情報</p>
         <table>
             <tbody>
                 <tr>
@@ -56,6 +56,15 @@
                 </c:forEach>
             </tbody>
         </table>
-
+        <div id="pagination">
+            <c:choose>
+                <c:when test="${is_max_month}">
+                     <p><a href="<c:url value='/worktime/index?cursor=back'/>"><</a> <fmt:formatDate value="${date_for_page}" pattern="yyyy年MM月"/></p>
+                </c:when>
+                <c:otherwise>
+                     <p><a href="<c:url value='/worktime/index?cursor=back'/>"><</a> <fmt:formatDate value="${date_for_page}" pattern="yyyy年MM月"/> <a href="<c:url value='/worktime/index?cursor=forward'/>">></a></p>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </c:param>
 </c:import>
